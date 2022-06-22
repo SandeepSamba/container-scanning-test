@@ -1,0 +1,27 @@
+name: Scan Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "The tag of the graphql-engine image to be scanned"
+        required: true
+        default: latest
+
+jobs:
+  Scan-Image:
+    name: Scan Graphql-engine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'hasura/graphql-engine:${{ github.event.inputs.image_tag }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
