@@ -16,7 +16,7 @@ jobs:
       - name: Run Trivy
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'hasura/graphql-engine:${{ github.event.inputs.image_tag }}'
+          image-ref: 'hasuraci/graphql-engine-pro:${{ github.event.inputs.image_tag }}'
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
